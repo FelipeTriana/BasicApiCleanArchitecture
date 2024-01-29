@@ -1,0 +1,30 @@
+plugins {
+	id 'test-report-aggregation'
+	id 'jacoco-report-aggregation'
+}
+
+apply plugin: 'org.springframework.boot'
+
+tasks.named('check') {
+    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+    dependsOn tasks.named('testAggregateTestReport', TestReport) 
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+	runtimeOnly('org.springframework.boot:spring-boot-devtools')
+	testImplementation 'org.mockito:mockito-inline'
+	testImplementation 'com.h2database:h2:2.1.214'
+//DEPENDENCIES_TEST_APP_SERVICE
+
+
+	implementation project(":domain-usecase")
+	implementation project(":domain-model")
+	implementation project(":driven-adapters-jpa-repository")
+	implementation project(":entry-points-reactive-web")
+	implementation project(":helpers-jpa-repository-commons")
+//DEPENDENCIES_APP_SERVICE
+
+
+}

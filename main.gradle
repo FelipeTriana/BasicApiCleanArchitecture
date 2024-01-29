@@ -1,0 +1,56 @@
+subprojects {
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+		maven {
+            url "https://artifactory.suramericana.com.co/artifactory/sura-share/"
+            credentials {
+            	username "artifactory"
+            	password "artifactory"
+            }
+        }
+    }
+
+    dependencies {
+        testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+        testImplementation "io.projectreactor:reactor-test"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+        testRuntimeOnly    "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+        implementation "io.projectreactor:reactor-core"
+        implementation "io.projectreactor.addons:reactor-extra"
+
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    jacoco {
+        toolVersion = '0.8.8'
+    }
+
+    jacocoTestReport {
+        dependsOn test
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
+            mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
+        }
+    }
+}

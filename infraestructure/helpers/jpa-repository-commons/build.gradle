@@ -1,0 +1,7 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation 'org.postgresql:postgresql:42.2.24'
+    implementation 'org.reactivecommons.utils:object-mapper-api:0.1.0'
+    testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+    testImplementation 'com.h2database:h2:2.1.214'
+}

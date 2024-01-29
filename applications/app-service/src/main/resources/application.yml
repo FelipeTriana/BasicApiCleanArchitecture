@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: CleanArchitecture
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cleanexample
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+app:
+  context: /api
+  #SELF_APP_CONFIGURATION_OPT
+

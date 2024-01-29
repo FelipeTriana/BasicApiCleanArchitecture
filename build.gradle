@@ -1,0 +1,31 @@
+buildscript {
+    ext {
+	    springFrameworkVersion = '6.0.10'
+        springBootVersion      = '3.1.1'
+        springCloudVersion     = '2022.0.3'
+        lombokVersion          = '1.18.28'
+        reactorVersion         = '2022.0.8'
+        junitVersion           = '5.9.3'
+		asyncCommonsVersion    = '2.0.0'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://repo.spring.io/snapshot" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "jacoco"
+}
+
+apply plugin: 'project-report'
+
+htmlDependencyReport {
+    projects = project.allprojects
+}
+
+apply from: './main.gradle'

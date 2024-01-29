@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(':domain-model')
+    implementation project(':helpers-jpa-repository-commons')
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+
+    testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+    testImplementation 'com.h2database:h2:2.1.214'
+}
+
