@@ -20,4 +20,13 @@ public class UserService {
                 .map(Mapper::toDto);
     }
 
+    @PostMapping(path = "user")
+    public Mono<UserDto> saveUser(@RequestBody UserDto user){
+        return userUseCase.saveUser(Mapper.toDomain(user))
+                .map(Mapper::toDto);
+    }
+
+
+
+
 }

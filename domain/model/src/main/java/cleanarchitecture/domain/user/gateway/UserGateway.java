@@ -5,4 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface UserGateway {
     Mono<User> findUserById(String id);
+    Mono<User> saveUser(User user);
 }

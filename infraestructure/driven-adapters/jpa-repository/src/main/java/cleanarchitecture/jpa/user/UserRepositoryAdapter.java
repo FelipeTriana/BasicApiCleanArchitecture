@@ -21,4 +21,9 @@ public class UserRepositoryAdapter extends AdapterOperations<User, UserData, Str
         return findById(id);
     }
 
+    @Override
+    public Mono<User> saveUser(User user) {
+        return save(user);
+    }
+
 }

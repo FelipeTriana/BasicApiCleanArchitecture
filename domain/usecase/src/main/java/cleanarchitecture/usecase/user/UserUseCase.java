@@ -14,4 +14,8 @@ public class UserUseCase {
         return users.findUserById(id).switchIfEmpty(Mono.error(BusinessException.Type.USER_NOT_EXIST.defer()));
     }
 
+    public Mono<User> saveUser(User user){
+        return users.saveUser(user);
+    }
+
 }
