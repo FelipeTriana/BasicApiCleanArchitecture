@@ -6,6 +6,7 @@ import com.reactive.repository.jpa.AdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
@@ -25,5 +26,16 @@ public class UserRepositoryAdapter extends AdapterOperations<User, UserData, Str
     public Mono<User> saveUser(User user) {
         return save(user);
     }
+
+    @Override
+    public Flux<User> findAll() {
+        return doQueryMany(repository::getUsers);
+    }
+
+    @Override
+    public Mono<Void> deleteUser(String id) {
+        return deleteById(id).then();
+    }
+
 
 }
