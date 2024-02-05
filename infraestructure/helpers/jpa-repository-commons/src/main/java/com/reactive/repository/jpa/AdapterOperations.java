@@ -55,9 +55,7 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<D, I> 
     public Mono<E> deleteById(I id) {
         return doQuery(fromSupplier(() -> repository.findById(id)).subscribeOn(Schedulers.boundedElastic())
             .flatMap(data -> {
-                if (data != null) {
-                    repository.delete(data.get());
-                }
+                data.ifPresent(repository::delete);
                 return Mono.justOrEmpty(data);
             }));
     }
