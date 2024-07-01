@@ -53,9 +53,9 @@ Cuando los contenedores esten corriendo se puede acceder al siguiente get para v
 
 Desde postman se puede importar la siguiente colección para probar los endpoints:
 
-[CleanArq.postman_collection.json](..%2F..%2FCleanArq.postman_collection.json)
+[CleanArq.postman_collection.json](CleanArq.postman_collection.json)
 
-Para obtener el reporte completo de Jacoco para la cobertura de pruebas primero correr la tarea de applications-app-service en 
+Para obtener el reporte completo de Jacoco de cobertura de pruebas primero correr la tarea de applications-app-service en 
 la sección verification llamada: **testCodeCoverageReport**, luego buscar el reporte generado en la ruta: 
 
 applications/app-service/build/reports/jacoco/testCodeCoverageReport/html/index.html
