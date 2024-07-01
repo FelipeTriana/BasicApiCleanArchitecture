@@ -51,12 +51,11 @@ Cuando los contenedores esten corriendo se puede acceder al siguiente get para v
 
 [http://localhost:8080/api/user](http://localhost:8080/api/user) 
 
-Desde postman se puede hacer post a localhost:8080/api/user para crear usuarios con esta estructura json de ejemplo:
+Desde postman se puede importar la siguiente colección para probar los endpoints:
 
-```json
-{
-    "id": "nro1",
-    "name": "Coco",
-    "lastName": "Loco"
-}
-```
+[CleanArq.postman_collection.json](..%2F..%2FCleanArq.postman_collection.json)
+
+Para obtener el reporte completo de Jacoco para la cobertura de pruebas primero correr la tarea de applications-app-service en 
+la sección verification llamada: **testCodeCoverageReport**, luego buscar el reporte generado en la ruta: 
+
+applications/app-service/build/reports/jacoco/testCodeCoverageReport/html/index.html
