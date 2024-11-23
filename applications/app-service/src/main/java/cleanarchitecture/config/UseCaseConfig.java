@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @ComponentScan(basePackages = "cleanarchitecture.usecase",
@@ -31,28 +31,29 @@ public class UseCaseConfig {
     public UserGateway userGateway() {
         return new UserGateway() {
             @Override
-            public Mono<User> findUserById(String id) {
+            public User findUserById(String id) {
                 // Fake implementation
-                return Mono.just(createFakeUser("fakeId", "fakeName", "fakeLastName"));
+                return createFakeUser("fakeId", "fakeName", "fakeLastName");
             }
 
             @Override
-            public Mono<User> saveUser(User user) {
+            public User saveUser(User user) {
                 // Fake implementation
-                return Mono.just(user);
+                return user;
             }
 
             @Override
-            public Flux<User> findAll() {
+            public List<User> findAll() {
                 // Fake implementation
-                return Flux.just(createFakeUser("fakeId1", "fakeName1", "fakeLastName1"),
-                        createFakeUser("fakeId2", "fakeName2", "fakeLastName2"));
+                return Arrays.asList(
+                        createFakeUser("fakeId1", "fakeName1", "fakeLastName1"),
+                        createFakeUser("fakeId2", "fakeName2", "fakeLastName2")
+                );
             }
 
             @Override
-            public Mono<Void> deleteUser(String id) {
+            public void deleteUser(String id) {
                 // Fake implementation
-                return Mono.empty();
             }
 
             private User createFakeUser(String id, String name, String lastName) {

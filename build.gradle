@@ -4,7 +4,6 @@ buildscript {
         springBootVersion      = '3.1.1'
         springCloudVersion     = '2022.0.3'
         lombokVersion          = '1.18.28'
-        reactorVersion         = '2022.0.8'
         junitVersion           = '5.9.3'
 		asyncCommonsVersion    = '2.0.0'
     }

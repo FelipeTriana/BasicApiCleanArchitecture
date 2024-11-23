@@ -1,13 +1,14 @@
 package cleanarchitecture.domain.user.gateway;
 
 import cleanarchitecture.domain.user.User;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+
 
 public interface UserGateway {
-    Mono<User> findUserById(String id);
-    Mono<User> saveUser(User user);
-    Flux<User> findAll();
-    Mono<Void> deleteUser(String id);
+    User findUserById(String id);
+    User saveUser(User user);
+    List<User> findAll();
+    void deleteUser(String id);
 
 }

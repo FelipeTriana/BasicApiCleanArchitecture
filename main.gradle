@@ -13,12 +13,10 @@ subprojects {
 
     dependencies {
         testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-        testImplementation "io.projectreactor:reactor-test"
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testRuntimeOnly    "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 
-        implementation "io.projectreactor:reactor-core"
-        implementation "io.projectreactor.addons:reactor-extra"
+
 
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
@@ -43,7 +41,6 @@ subprojects {
             mavenBom "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
             mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
-            mavenBom "io.projectreactor:reactor-bom:${reactorVersion}"
         }
     }
 }
