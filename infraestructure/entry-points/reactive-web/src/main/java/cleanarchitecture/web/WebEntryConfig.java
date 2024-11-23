@@ -14,19 +14,5 @@ import java.util.Map;
 
 @Configuration
 public class WebEntryConfig {
-    @Autowired
-    private Environment env;
 
-    @Bean
-    public NettyReactiveWebServerFactory nettyReactiveWebServerFactory() {
-        NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory() {
-            @Override
-            public WebServer getWebServer(HttpHandler httpHandler) {
-                Map<String, HttpHandler> handlerMap = new HashMap<>();
-                handlerMap.put(env.getProperty("app.context"), httpHandler);
-                return super.getWebServer(new ContextPathCompositeHandler(handlerMap));
-            }
-        };
-        return webServerFactory;
-    }
 }

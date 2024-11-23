@@ -34,7 +34,7 @@ public abstract class AdapterOperations<E, D, I, R extends CrudRepository<D, I> 
 
     public Mono<E> save(E entity) {
         return Mono.just(entity)
-            .map(this::toData)
+            .map(d -> toData(d))
             .flatMap(this::saveData)
             .thenReturn(entity);
     }
