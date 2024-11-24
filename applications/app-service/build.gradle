@@ -23,6 +23,7 @@ dependencies {
 	implementation project(":domain-model")
 	implementation project(":entry-points-reactive-web")
 	implementation project(":helpers-jpa-repository-commons")
+	implementation project(":driven-adapters-jpa-repository")
 //DEPENDENCIES_APP_SERVICE
 
 

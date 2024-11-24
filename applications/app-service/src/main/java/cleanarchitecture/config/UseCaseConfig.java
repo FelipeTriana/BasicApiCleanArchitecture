@@ -27,45 +27,6 @@ public class UseCaseConfig {
         return new ObjectMapperImp();
     }
 
-    @Bean
-    public UserGateway userGateway() {
-        return new UserGateway() {
-            @Override
-            public User findUserById(String id) {
-                // Fake implementation
-                return createFakeUser("fakeId", "fakeName", "fakeLastName");
-            }
 
-            @Override
-            public User saveUser(User user) {
-                // Fake implementation
-                return user;
-            }
-
-            @Override
-            public List<User> findAll() {
-                // Fake implementation
-                return Arrays.asList(
-                        createFakeUser("fakeId1", "fakeName1", "fakeLastName1"),
-                        createFakeUser("fakeId2", "fakeName2", "fakeLastName2")
-                );
-            }
-
-            @Override
-            public void deleteUser(String id) {
-                // Fake implementation
-            }
-
-            private User createFakeUser(String id, String name, String lastName) {
-                try {
-                    Constructor<User> constructor = User.class.getDeclaredConstructor(String.class, String.class, String.class);
-                    constructor.setAccessible(true);
-                    return constructor.newInstance(id, name, lastName);
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to create User instance", e);
-                }
-            }
-        };
-    }
 
 }

@@ -8,9 +8,10 @@ spring:
     password: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
-app:
-  context: /api
-  #SELF_APP_CONFIGURATION_OPT
+server:
+  servlet:
+    context-path: /api
+    #SELF_APP_CONFIGURATION_OPT
 

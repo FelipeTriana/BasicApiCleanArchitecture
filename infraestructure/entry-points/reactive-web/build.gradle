@@ -3,6 +3,8 @@ dependencies {
     implementation project(':domain-usecase')
     implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.0.0'
+
     implementation 'javax.validation:validation-api:2.0.1.Final'
 
 

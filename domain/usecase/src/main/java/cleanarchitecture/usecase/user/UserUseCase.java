@@ -7,9 +7,14 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 
-@RequiredArgsConstructor
+
 public class UserUseCase {
+
     private final UserGateway users;
+
+    public UserUseCase(UserGateway users) {
+        this.users = users;
+    }
 
     public User findUser(String id){
         return users.findUserById(id);
