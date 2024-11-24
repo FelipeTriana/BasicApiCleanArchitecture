@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ClienteUseCase {
 
-    private final ClienteGateway clientes;
+    private final ClienteGateway clientesGateway;
 
-
-    public ClienteUseCase(ClienteGateway cientes) {
-        this.clientes = cientes;
+    public ClienteUseCase(ClienteGateway clientesGateway) {
+        this.clientesGateway = clientesGateway;
     }
 
+
     public List<Cliente> findAll(){
-        return clientes.findAll();
+        return clientesGateway.findAll();
     }
 }
