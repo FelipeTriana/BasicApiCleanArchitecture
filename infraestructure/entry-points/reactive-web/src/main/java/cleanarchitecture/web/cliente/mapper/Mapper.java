@@ -11,17 +11,17 @@ public class Mapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Cliente toDomain(ClienteDto clienteData) {
+    public static Cliente toDomain(ClienteDto clienteDto) {
         return Cliente.builder()
-                .clienteDni(clienteData.getClienteDni())
-                .nombre(clienteData.getNombre())
-                .telefono(clienteData.getTelefono())
-                .correo(clienteData.getCorreo())
-                .estatura(clienteData.getEstatura())
-                .edad(clienteData.getEdad())
+                .clienteDni(clienteDto.getClienteDni())
+                .nombre(clienteDto.getNombre())
+                .telefono(clienteDto.getTelefono())
+                .correo(clienteDto.getCorreo())
+                .estatura(clienteDto.getEstatura())
+                .edad(clienteDto.getEdad())
                 .contactoFamiliar(new ContactoFamiliar(
-                        clienteData.getContactoFamiliarDto().getNombreContacto(),
-                        clienteData.getContactoFamiliarDto().getTelefonoContacto()))
+                        clienteDto.getContactoFamiliarDto().getNombreContacto(),
+                        clienteDto.getContactoFamiliarDto().getTelefonoContacto()))
                 .build();
     }
 

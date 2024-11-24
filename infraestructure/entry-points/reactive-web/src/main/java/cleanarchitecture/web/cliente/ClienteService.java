@@ -2,6 +2,8 @@ package cleanarchitecture.web.cliente;
 
 import cleanarchitecture.domain.cliente.Cliente;
 import cleanarchitecture.usecase.cliente.ClienteUseCase;
+import cleanarchitecture.web.cliente.dto.ClienteDto;
+import cleanarchitecture.web.cliente.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,9 @@ public class ClienteService {
     private final ClienteUseCase clienteUseCase;
 
     @GetMapping(path = "cliente")
-    public List<Cliente> findAll(){
-        List<Cliente> cliente = new ArrayList<>();
-        clienteUseCase.findAll().forEach(c -> cliente.add(c));
-        return cliente;
+    public List<ClienteDto> findAll(){
+        List<ClienteDto> clienteDto = new ArrayList<>();
+        clienteUseCase.findAll().forEach(c -> clienteDto.add(Mapper.toDto(c)));
+        return clienteDto;
     }
 }
