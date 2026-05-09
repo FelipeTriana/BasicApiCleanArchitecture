@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDataRepository extends CrudRepository<UserData, String>, QueryByExampleExecutor<UserData> {
 
@@ -15,4 +16,7 @@ public interface UserDataRepository extends CrudRepository<UserData, String>, Qu
     @Query(value = QUERY,
             nativeQuery = true)
     List<UserData> getUsers();
+
+    Optional<UserData> findByEmail(String email);
 }
+

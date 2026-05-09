@@ -4,6 +4,14 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
 
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // BCrypt password encoding — version aligned with Spring Boot 3.1.1 (Spring Security 6.1.1)
+    implementation "org.springframework.security:spring-security-crypto:6.1.1"
+
     testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
     testImplementation 'com.h2database:h2:2.1.214'
 }

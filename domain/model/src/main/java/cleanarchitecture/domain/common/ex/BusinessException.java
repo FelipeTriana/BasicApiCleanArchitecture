@@ -8,7 +8,13 @@ public class BusinessException extends ApplicationException {
 
         INVALID_TODO_INITIAL_DATA("Invalid TODO initial data"),
 
-        USER_NOT_EXIST("Indicated User not exist!");
+        USER_NOT_EXIST("Indicated User not exist!"),
+
+        USER_ALREADY_EXISTS("A user with that email already exists"),
+
+        INVALID_CREDENTIALS("Invalid email or password"),
+
+        USER_DISABLED("The user account is disabled");
 
 
         private final String message;

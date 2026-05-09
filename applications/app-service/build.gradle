@@ -18,6 +18,8 @@ dependencies {
 	testImplementation 'com.h2database:h2:2.1.214'
 //DEPENDENCIES_TEST_APP_SERVICE
 
+	// Spring Security (WebFlux reactive)
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation project(":domain-usecase")
 	implementation project(":domain-model")
