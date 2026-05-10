@@ -271,13 +271,24 @@ El password se encoda con `Schedulers.boundedElastic()` porque BCrypt es una ope
 
 #### Infrastructure / Driven Adapters — Implementaciones
 
+Este proyecto separa los adaptadores en dos módulos con responsabilidad única:
+
+**Módulo `driven-adapters-jpa-repository`** — solo persistencia:
+
 | Archivo | Implementa | Librería |
 |---|---|---|
 | `UserRepositoryAdapter.java` | `UserGateway` + `AuthGateway` | Spring Data JPA |
-| `JwtAdapter.java` | `TokenGateway` | JJWT 0.12.6 |
-| `BCryptAdapter.java` | `PasswordGateway` | Spring Security Crypto |
 | `UserData.java` | Entidad JPA enriquecida | JPA / Hibernate |
 | `UserDataRepository.java` | Repositorio con `findByEmail` | Spring Data |
+
+**Módulo `driven-adapters-security`** — solo contratos de seguridad:
+
+| Archivo | Implementa | Librería |
+|---|---|---|
+| `JwtAdapter.java` | `TokenGateway` | JJWT 0.12.6 |
+| `BCryptAdapter.java` | `PasswordGateway` | Spring Security Crypto |
+
+> Esta separación garantiza que un cambio de motor de base de datos (ej. JPA → R2DBC) no afecte los adaptadores de seguridad, y viceversa.
 
 #### Infrastructure / Entry Points — Controladores y DTOs
 
@@ -319,13 +330,14 @@ domain/usecase/src/main/java/cleanarchitecture/usecase/
     └── AuthUseCase.java                   ← NUEVO
 
 infraestructure/driven-adapters/jpa-repository/src/main/java/cleanarchitecture/jpa/
-├── user/
-│   ├── UserData.java                      ← MODIFICADO (+columnas email, password_hash, role, enabled, created_at)
-│   ├── UserDataRepository.java            ← MODIFICADO (+findByEmail)
-│   └── UserRepositoryAdapter.java         ← MODIFICADO (implementa AuthGateway)
-└── auth/
-    ├── JwtAdapter.java                    ← NUEVO
-    └── BCryptAdapter.java                 ← NUEVO
+└── user/
+    ├── UserData.java                      ← MODIFICADO (+columnas email, password_hash, role, enabled, created_at)
+    ├── UserDataRepository.java            ← MODIFICADO (+findByEmail)
+    └── UserRepositoryAdapter.java         ← MODIFICADO (implementa AuthGateway)
+
+infraestructure/driven-adapters/security/src/main/java/cleanarchitecture/security/
+    ├── JwtAdapter.java                    ← NUEVO (movido desde jpa-repository)
+    └── BCryptAdapter.java                 ← NUEVO (movido desde jpa-repository)
 
 infraestructure/entry-points/reactive-web/src/main/java/cleanarchitecture/web/
 ├── auth/
@@ -348,10 +360,13 @@ applications/app-service/src/main/resources/
 └── application.yml                        ← MODIFICADO (+jwt.secret, jwt.expiration-seconds)
 
 applications/app-service/
-└── build.gradle                           ← MODIFICADO (+spring-boot-starter-security)
+└── build.gradle                           ← MODIFICADO (+spring-boot-starter-security, +driven-adapters-security)
 
 infraestructure/driven-adapters/jpa-repository/
-└── build.gradle                           ← MODIFICADO (+jjwt, spring-security-crypto)
+└── build.gradle                           ← RESTAURADO (sin jjwt ni spring-security-crypto)
+
+infraestructure/driven-adapters/security/
+└── build.gradle                           ← NUEVO (jjwt + spring-security-crypto + spring-context)
 
 docker-compose.yml                         ← MODIFICADO (+JWT_SECRET env var)
 ```

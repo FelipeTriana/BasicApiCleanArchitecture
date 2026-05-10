@@ -1,4 +1,4 @@
-package cleanarchitecture.jpa.auth;
+package cleanarchitecture.security;
 
 import cleanarchitecture.domain.user.gateway.PasswordGateway;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

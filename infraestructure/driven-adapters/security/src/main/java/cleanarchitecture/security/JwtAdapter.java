@@ -1,4 +1,4 @@
-package cleanarchitecture.jpa.auth;
+package cleanarchitecture.security;
 
 import cleanarchitecture.domain.user.Role;
 import cleanarchitecture.domain.user.TokenClaims;

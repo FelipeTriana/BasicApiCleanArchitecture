@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':domain-model')
+
+    // Spring Context for @Component and @Value (no full Boot needed here)
+    implementation 'org.springframework:spring-context'
+
+    // JWT signing and verification (JJWT 0.12.x)
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // BCrypt password encoding — Spring Security Crypto (aligned with Spring Boot 3.1.1)
+    implementation 'org.springframework.security:spring-security-crypto:6.1.1'
+}

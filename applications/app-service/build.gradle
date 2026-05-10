@@ -24,6 +24,7 @@ dependencies {
 	implementation project(":domain-usecase")
 	implementation project(":domain-model")
 	implementation project(":driven-adapters-jpa-repository")
+	implementation project(":driven-adapters-security")
 	implementation project(":entry-points-reactive-web")
 	implementation project(":helpers-jpa-repository-commons")
 //DEPENDENCIES_APP_SERVICE
