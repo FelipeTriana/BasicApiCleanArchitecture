@@ -78,15 +78,15 @@ POST http://localhost:8080/api/auth/register
 Luego hacer login para obtener el JWT y usarlo en el header `Authorization: Bearer <token>` para los demás endpoints.
 
 > **Nota sobre roles:** Todo usuario registrado recibe el rol `USER` por defecto.  
-> Para acceder a los endpoints de administración (`GET /user`, `POST /user`, `DELETE /user/{id}`)  
-> debes cambiar el rol manualmente en la base de datos:
+> Para acceder a los endpoints de administración (`GET /user`, `POST /user`, `DELETE /user/{id}`, `PATCH /user/{id}/role`)  
+> debes tener el rol `ADMIN`. El primer ADMIN debe configurarse manualmente en la base de datos:
 > ```bash
 > docker exec -it postgres_db_container psql -U root -d cleanexample
 > ```
 > ```sql
 > UPDATE user_data SET role = 'ADMIN' WHERE email = 'tu@email.com';
 > ```
-> Luego haz login de nuevo para obtener un JWT con el rol `ADMIN` actualizado.
+> A partir de ahí, ese ADMIN puede cambiar el rol de otros usuarios vía `PATCH /api/user/{id}/role` sin tocar la BD.
 
 Desde postman se puede importar la siguiente colección para probar los endpoints:
 
@@ -257,6 +257,7 @@ Cliente                  JwtAuthWebFilter         SecurityWebFilterChain   Contr
 | `AuthGateway.java` | Puerto: `findByEmail(email) → Mono<User>` |
 | `TokenGateway.java` | Puerto: `generateToken(User)` / `validateToken(token) → Mono<TokenClaims>` |
 | `PasswordGateway.java` | Puerto: `encode(raw)` / `matches(raw, hash)` |
+| `UserGateway.java` | Puerto enriquecido con `updateRole(id, Role) → Mono<User>` |
 | `BusinessException.Type` | Nuevos tipos: `INVALID_CREDENTIALS`, `USER_ALREADY_EXISTS`, `USER_DISABLED` |
 
 > El dominio no importa Spring, JJWT ni BCrypt. Solo define interfaces que la infraestructura implementa.
@@ -266,6 +267,7 @@ Cliente                  JwtAuthWebFilter         SecurityWebFilterChain   Contr
 | Archivo | Responsabilidad |
 |---|---|
 | `AuthUseCase.java` | `register`: valida unicidad, encoda password en hilo boundedElastic, asigna rol USER. `login`: verifica credenciales, genera JWT. |
+| `UserUseCase.java` | `changeRole(id, newRole)`: valida que el usuario existe y delega el cambio de rol al gateway. Solo invocable por ADMIN (validado en SecurityConfig). |
 
 El password se encoda con `Schedulers.boundedElastic()` porque BCrypt es una operación **bloqueante y CPU-intensive** que no debe correr en el event loop de Netty/WebFlux.
 
@@ -326,14 +328,16 @@ domain/model/src/main/java/cleanarchitecture/domain/
     └── BusinessException.java             ← MODIFICADO (+3 tipos)
 
 domain/usecase/src/main/java/cleanarchitecture/usecase/
-└── auth/
-    └── AuthUseCase.java                   ← NUEVO
+├── auth/
+│   └── AuthUseCase.java                   ← NUEVO
+└── user/
+    └── UserUseCase.java                   ← MODIFICADO (+changeRole)
 
 infraestructure/driven-adapters/jpa-repository/src/main/java/cleanarchitecture/jpa/
 └── user/
     ├── UserData.java                      ← MODIFICADO (+columnas email, password_hash, role, enabled, created_at)
     ├── UserDataRepository.java            ← MODIFICADO (+findByEmail)
-    └── UserRepositoryAdapter.java         ← MODIFICADO (implementa AuthGateway)
+    └── UserRepositoryAdapter.java         ← MODIFICADO (implementa AuthGateway + updateRole)
 
 infraestructure/driven-adapters/security/src/main/java/cleanarchitecture/security/
     ├── JwtAdapter.java                    ← NUEVO (movido desde jpa-repository)
@@ -349,7 +353,10 @@ infraestructure/entry-points/reactive-web/src/main/java/cleanarchitecture/web/
 │   └── mapper/
 │       └── AuthMapper.java                ← NUEVO
 └── user/
-    ├── dto/UserDto.java                   ← MODIFICADO (+email, role)
+    ├── UserService.java                   ← MODIFICADO (+PATCH /user/{id}/role)
+    ├── dto/
+    │   ├── UserDto.java                   ← MODIFICADO (+email, role)
+    │   └── ChangeRoleRequest.java         ← NUEVO (body del PATCH)
     └── mapper/Mapper.java                 ← MODIFICADO (+email, role en mapeos)
 
 applications/app-service/src/main/java/cleanarchitecture/config/
@@ -390,11 +397,12 @@ docker-compose.yml                         ← MODIFICADO (+JWT_SECRET env var)
 
 ### Autenticados — Solo ADMIN
 
-| Método | URL | Descripción |
-|---|---|---|
-| `GET` | `/api/user` | Listar todos los usuarios |
-| `POST` | `/api/user` | Crear usuario |
-| `DELETE` | `/api/user/{id}` | Eliminar usuario |
+| Método | URL | Body | Descripción |
+|---|---|---|---|
+| `GET` | `/api/user` | — | Listar todos los usuarios |
+| `POST` | `/api/user` | `{ "name", "lastName", "email" }` | Crear usuario |
+| `DELETE` | `/api/user/{id}` | — | Eliminar usuario |
+| `PATCH` | `/api/user/{id}/role` | `{ "role": "ADMIN" \| "USER" }` | Cambiar rol de un usuario |
 
 ---
 

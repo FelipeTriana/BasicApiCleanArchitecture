@@ -70,7 +70,7 @@ public class AuthUseCase {
                     }
                     return Mono.fromCallable(
                                     () -> passwordGateway.matches(rawPassword, user.getPasswordHash()))
-                            .subscribeOn(Schedulers.boundedElastic())
+                            .subscribeOn(Schedulers.boundedElastic()) // No bloqueamos el event loop; delegamos la verificación a un hilo adecuado para operaciones de bloqueo.
                             .flatMap(matches -> matches
                                     ? Mono.fromCallable(() -> tokenGateway.generateToken(user))
                                             .subscribeOn(Schedulers.boundedElastic())

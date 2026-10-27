@@ -1,5 +1,6 @@
 package cleanarchitecture.jpa.user;
 
+import cleanarchitecture.domain.user.Role;
 import cleanarchitecture.domain.user.User;
 import cleanarchitecture.domain.user.gateway.AuthGateway;
 import cleanarchitecture.domain.user.gateway.UserGateway;
@@ -43,6 +44,22 @@ public class UserRepositoryAdapter extends AdapterOperations<User, UserData, Str
         return Mono.fromCallable(() -> repository.findByEmail(email))
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(Mono::justOrEmpty)
+                .map(this::toEntity);
+    }
+
+    /**
+     * Cambia el rol de un usuario.
+     * La operación es bloqueante (JPA), así que se delega a boundedElastic.
+     */
+    @Override
+    public Mono<User> updateRole(String id, Role newRole) {
+        return Mono.fromCallable(() -> {
+                    UserData data = repository.findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
+                    data.setRole(newRole);
+                    return repository.save(data);
+                })
+                .subscribeOn(Schedulers.boundedElastic())
                 .map(this::toEntity);
     }
 }

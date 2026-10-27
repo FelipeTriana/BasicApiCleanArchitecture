@@ -47,10 +47,10 @@ public class JwtAuthWebFilter implements WebFilter {
 
         return tokenGateway.validateToken(token)
                 .flatMap(claims -> {
-                    List<SimpleGrantedAuthority> authorities = List.of(
+                    List<SimpleGrantedAuthority> authorities = List.of(   //Permisos del usuario autenticado
                             new SimpleGrantedAuthority("ROLE_" + claims.getRole().name())
                     );
-                    UsernamePasswordAuthenticationToken authentication =
+                    UsernamePasswordAuthenticationToken authentication =   //Representa la identidad autenticada de un usuario, junto con sus credenciales (pueden ser nulas si ya está autenticado como este caso) y sus autoridades (roles/permisos).
                             new UsernamePasswordAuthenticationToken(
                                     claims.getEmail(), null, authorities);
 

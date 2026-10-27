@@ -13,6 +13,7 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+// Este es el filtro de autorizacion, viene despus de que el filtro de autenticacion (JwtAuthWebFilter) haya validado el token y establecido el contexto de seguridad.
 
 /**
  * Spring Security configuration for a WebFlux (reactive) API.
@@ -24,14 +25,14 @@ import java.util.List;
  *  - CORS           → configured explicitly; never rely on the default open policy.
  *  - Security headers → Spring Security adds HSTS, X-Frame-Options,
  *                       X-Content-Type-Options automatically.
- *
  * Authorization matrix:
- *  POST  /auth/**       → public (register / login)
- *  GET   /user/{id}     → any authenticated user (USER or ADMIN)
- *  GET   /user          → ADMIN only
- *  POST  /user          → ADMIN only
- *  DELETE /user/**      → ADMIN only
- *  any other            → authenticated
+ *  POST   /auth/**          → public (register / login)
+ *  GET    /user/{id}        → any authenticated user (USER or ADMIN)
+ *  GET    /user             → ADMIN only
+ *  POST   /user             → ADMIN only
+ *  DELETE /user/**          → ADMIN only
+ *  PATCH  /user/{id}/role   → ADMIN only
+ *  any other                → authenticated
  */
 @Configuration
 @EnableWebFluxSecurity
@@ -58,6 +59,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "/user/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PATCH, "/user/*/role").hasRole("ADMIN")
                         // Anything else requires authentication
                         .anyExchange().authenticated()
                 )
@@ -73,7 +75,7 @@ public class SecurityConfig {
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
