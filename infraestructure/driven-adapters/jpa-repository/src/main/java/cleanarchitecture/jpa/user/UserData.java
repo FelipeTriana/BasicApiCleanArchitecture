@@ -1,9 +1,11 @@
 package cleanarchitecture.jpa.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import cleanarchitecture.domain.user.Role;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,4 +16,20 @@ public class UserData {
     private String name;
     private String lastName;
 
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @Column(nullable = false)
+    private boolean enabled;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }
+

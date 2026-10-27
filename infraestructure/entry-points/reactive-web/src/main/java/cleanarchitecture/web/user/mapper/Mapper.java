@@ -14,6 +14,7 @@ public class Mapper {
                 .id(userDto.getId())
                 .name(userDto.getName())
                 .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
                 .build();
     }
 
@@ -22,6 +23,8 @@ public class Mapper {
                 .id(user.getId())
                 .name(user.getName())
                 .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole() != null ? user.getRole().name() : null)
                 .build();
     }
 

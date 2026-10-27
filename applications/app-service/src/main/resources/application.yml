@@ -14,3 +14,9 @@ app:
   context: /api
   #SELF_APP_CONFIGURATION_OPT
 
+jwt:
+  # Must be at least 32 characters (256 bits) for HS256.
+  # In production, inject via environment variable: JWT_SECRET
+  secret: ${JWT_SECRET:ChangeThisSecretInProductionMustBe32Chars!!}
+  expiration-seconds: 86400   # 24 hours
+
